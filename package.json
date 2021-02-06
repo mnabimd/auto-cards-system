@@ -1,0 +1,47 @@
+{
+  "name": "auto-card-system",
+  "version": "1.0.0",
+  "description": "A system which will generate idenitity-cards for students in Kandahar University.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel watch:server watch:build",
+    "devProd": "npm-run-all --parallel watch:server watch:buildProdEnv",
+    "devWebpack": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production",
+    "start": "node src-server/index.js",
+    "startLocal": "node src-server/index.js",
+    "watch:server": "webpack -d --watch",
+    "watch:build": "env-cmd -f ./config/dev.env nodemon  ./src-server/index.js ",
+    "watch:buildProdEnv": "env-cmd -f ./config/prod.env nodemon  ./src-server/index.js ",
+    "seqMigrate": "sequelize db:migrate --env production",
+    "seqMigrateUndoAll": "sequelize db:migrate:undo:all --env production"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.3",
+    "npm-run-all": "^4.1.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.0",
+    "connect-flash": "^0.1.1",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.11.9",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  },
+  "author": "Mohammad Nabi",
+  "license": "ISC"
+}
