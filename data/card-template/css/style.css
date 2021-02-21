@@ -1,0 +1,75 @@
+@font-face {
+    font-family: "Titer";
+    src: url('../fonts/IRTitr.ttf');
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+#image {
+    width: 100% !important;
+    /* height: 29.5cm !important; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.titer {
+    font-family: "Titer" !important;
+}
+
+.ab {
+    position: absolute !important;
+}
+
+#id {
+    position: absolute;
+    color: white;
+    font-weight: bold;
+    top: 195px;
+    right: 42px;
+    font-size: 20px;
+}
+
+.center {
+    position: absolute;
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+}
+
+#name {
+    color: #353A40;
+    top: 614px;
+    font-size: 40px;
+}
+
+#fatherName {
+    color: white;
+    top: 713px;
+}
+
+#titleWithFaculty {
+    color: white;
+    top: 786px;
+}
+
+#branch {
+    color: #353A40;
+    top: 860px;
+}
+
+#blood {
+    color: #353A40;
+    font-weight: bold;
+    top: 913px;
+}
+
+#expireDate {
+    color: #353A40;;
+    top: 966px;
+}

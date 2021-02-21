@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<%- include('partials/head')%>
+<head>
+    <%- include('partials/head')%>
+    <title>Auto Card System - KDR University</title>
+</head>
 
 <body id="page-top">
 
@@ -26,15 +29,9 @@
                 <div class="container-fluid">
                     <!-- ---------------------------------------------------------------------- -->
                     <!-- Page Heading -->
-                    <div class="main-div">
-                        <form>
-                            <label for="">Import Excel to JSON</label>
-                            <input type="file" id="excelFile-input">
-                    
-                            <br>
-                            <label for="">Export JSON to MongoDB</label>
-                            <input id="export2excel-btn" type="button" value="Export">
-                        </form>
+                    <div class="main-div" id="card">
+                        <!-- <h4 class="text-dark">Create New Card</h4> -->
+                        Home Page
                     </div>
                     <!-- ---------------------------------------------------------------------- -->
                 </div>
@@ -44,13 +41,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
+            <%- include('partials/footer')%>
             <!-- End of Footer -->
 
         </div>

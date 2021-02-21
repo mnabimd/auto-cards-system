@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Live </title>
+    <link rel="stylesheet" href="./card-template/css/style.css">
+</head>
+
+<style>
+    body {
+        max-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #292424;
+    }
+
+
+    /* This is the only difference between the LIVE vs GENERATED */
+    .card {
+        transform: scale(0.45);
+        width: 216mm !important;
+        height: 345mm !important;
+        position: relative !important;
+    }
+
+    /* This is the only difference between the LIVE vs GENERATED */
+
+    .controls {
+        position: absolute;
+        left: 50px;
+        bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        background: white;
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        padding: 20px;
+        border-radius: 10px;
+        width: 175px;
+    }
+
+    .download-btn {
+        padding: 5px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background: #1167B2;
+        color: white;
+        border: none;
+        margin-top: 15px;
+    }
+</style>
+
+<body>
+
+    <!-- Controls -->
+    <form method="POST" class="controls">
+        <h4>Controls & Settings</h4>
+        <label for="customRange1" class="form-label">Size</label>
+        <input type="range" class="form-range" id="profile-width" name="profile-width" value="0" min="-100" max="100">
+
+        <label for="customRange1" class="form-label">Left-Right:</label>
+        <input type="range" class="form-range" id="profile-left" name="profile-left" value="0" min="-100" max="100">
+
+        <label for="customRange1" class="form-label">Top-Bottom</label>
+        <input type="range" class="form-range" id="profile-top" name="profile-top" value="0" min="-100" max="100">
+
+        <button type="submit" class="download-btn">Download Image</button>
+    </form>
+
+    <div class="card" id="card">
+
+        <% if (data.student) { %>
+        <div class="values">
+
+            <!-- Image Wrapper and Photo -->
+            <div class="wrapper">
+                <style>
+                    .wrapper {
+                        position: absolute;
+                        text-align: center;
+                        display: inline-block;
+                        top: 292px;
+                        left: 2px;
+                        width: 100%;
+
+                    }
+
+                    .profile-div {
+                        width: 293px;
+                        height: 293px;
+                        border-radius: 50%;
+                        margin-left: auto;
+                        margin-right: auto;
+                        overflow: hidden;
+                    }
+
+                    #profile-photo {
+                        position: relative;
+                        width: 285px;
+                        top: 8px;
+                        left: 10px;
+                    }
+                </style>
+                <div class="profile-div">
+                    <img id="profile-photo" src="<%= data.student.profile%>">
+                </div>
+            </div>
+
+
+            <span id="id" class="ab titer">ID: <span id="id-value"><%= data.student.kankorId%></span></span>
+            <span id="name" class="ab titer center"><span id="fatherName-value"><%= data.student.name%></span></span>
+            <span id="fatherName" class="ab titer center">د پلارنوم: <span
+                    id="fatherName-value"><%= data.student.fatherName%></span></span>
+            <span id="titleWithFaculty" class="ab titer center" id="facluty-value"> د <%= data.student.faculty%> پوهنځی
+                محصل </span>
+            <span id="branch" class="ab titer center">څانګه: <span
+                    id="branch-value"><%= data.student.branch%></span></span>
+            <span id="blood" class="ab titer center"><span id="blood-value"><%= data.student.blood%></span>:د وینی ګروپ
+            </span>
+            <span id="expireDate" class="ab titer center">ختم نیټه:<span id="expire-value">۱۳۹۹/۱۲/۱۱</span></span>
+        </div>
+
+        <%}%>
+
+
+        <div class="image-div">
+            <img id="image" src="./card-template/images/card.jpg">
+        </div>
+    </div>
+
+</body>
+<script src="./card-template/js/main.js"></script>
+
+<script>
+
+    // My custom functions:--------------------
+    const getCssValue = (element, property) => {
+        const dom = document.querySelector(element);
+
+        return window.getComputedStyle(dom).getPropertyValue(property);
+    }
+    
+    const parser = (pxValue) => {return parseInt(pxValue.split('px')[0])};
+    // ------------------------------------------
+    
+     const profileElements = {
+        profilePhoto: document.getElementById('profile-photo'),
+        width: document.getElementById('profile-width'),
+        left: document.getElementById('profile-left'),
+        top: document.getElementById('profile-top')
+    }
+
+    const prevValues = {
+        width: parser(getCssValue('#profile-photo', 'width')),
+        top: parser(getCssValue('#profile-photo', 'top')),
+        left: parser(getCssValue('#profile-photo', 'left'))
+    }
+
+    const inputs = ['profile-width', 'profile-top', 'profile-left'];
+
+    inputs.forEach((input, index, array) => {
+        document.getElementById(input).addEventListener('input', (e) => {
+            let theElement = profileElements.profilePhoto.style;
+            if (input === array[0]) {
+                theElement.width = `${parseInt(e.target.value) + prevValues.width}px`;
+            } else if (input === array[1]) {
+                theElement.top = `${parseInt(e.target.value) + prevValues.top}px`;
+            } else if (input === array[2]) {
+                theElement.left = `${parseInt(e.target.value) + prevValues.left}px`;
+            }
+        })
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Bahij Nazanin";
+    src: url('../fonts/Bahij\ Nazanin-Regular.ttf')
+}
+
+
+.pashtoFont {
+    font-family: 'Bahij Nazanin' !important;
+}
+
+.pashtoFont-bold {
+    font-family: 'Bahij Nazanin' !important;
+    font-weight: bold;
+}
+
+.my-input {
+    border-radius: 5px !important;
+    padding: 0 20px !important;
+    height: 50px;
+    box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
+}
