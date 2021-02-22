@@ -26,11 +26,11 @@
 
 #id {
     position: absolute;
-    color: white;
+    color: rgb(24, 22, 22);
     font-weight: bold;
     top: 195px;
-    right: 42px;
-    font-size: 20px;
+    right: 25px;
+    font-size: 28px;
 }
 
 .center {
@@ -44,32 +44,37 @@
 
 #name {
     color: #353A40;
-    top: 614px;
-    font-size: 40px;
+    top: 657.5px;
+    font-size: 51px;
 }
 
 #fatherName {
     color: white;
-    top: 713px;
+    top: 769px;
+    font-size: 33px;
 }
 
 #titleWithFaculty {
     color: white;
-    top: 786px;
+    top: 856px;
+    font-size: 32px;
 }
 
 #branch {
     color: #353A40;
-    top: 860px;
+    top: 935px;
+    font-size: 33px;
 }
 
 #blood {
     color: #353A40;
     font-weight: bold;
-    top: 913px;
+    top: 987px;
+    font-size: 33px;
 }
 
 #expireDate {
     color: #353A40;;
-    top: 966px;
+    top: 1042px;
+    font-size: 33px;
 }

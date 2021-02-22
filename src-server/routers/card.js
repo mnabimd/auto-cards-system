@@ -9,12 +9,15 @@ const {
 } = require('./renderer/renderer');
 const multer = require('multer');
 const btoa = require('btoa');
+const pdf = require('html-pdf');
+const uniqueString = require('unique-string');
 
 const upload = multer({});
 
 const fs = require('fs');
-const pdf = require('html-pdf');
 const path = require('path');
+
+
 const data = {
     data: {}
 };
@@ -107,7 +110,38 @@ router.post('/cardLive', upload.single('profilePhoto'), (req, res) => {
             profile
         }
     });
-})
+});
+
+
+// Generating PDF and HTML:-
+
+router.post('/generatePDF', async (req, res) => {
+    const values = req.body.values
+
+    let theHtmlTemplate = fs.readFileSync(path.join(__dirname, '../../data/card-template/card.html'), 'utf8');
+
+    let newHtml = theHtmlTemplate.replace('<!-- CODE: MOHAMMDNABI -->', values);
+
+    const newHtmlName = uniqueString().slice(0, 10);
+    const newHTML = fs.writeFileSync(path.join(__dirname, `../../data/card-template/${newHtmlName}.html`), newHtml, () => {});
+
+    // Now, let's convert this HTML file to PDF by PhantomJS or HTML_PDF:-
+    const readNewHTMLFile = fs.readFileSync(path.join(__dirname, `../../data/card-template/${newHtmlName}.html`), 'utf8');
+
+    var options = {
+        base: "file:///C:/Users/Mohammad Nabi/Desktop/Web Projects/Web Development 2021/Auto Card System/data/card-template/",
+        width: '216mm',
+        height: '344.5mm',
+        quality: "100",
+        type: 'pdf'
+    };
+
+    pdf.create(readNewHTMLFile, options).toFile(`data/card-generated/${newHtmlName}.pdf`, function (err, response) {
+        if (err) return console.log(err);
+    });
+    
+    res.send('Done!')
+});
 
 
 

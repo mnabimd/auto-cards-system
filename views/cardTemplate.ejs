@@ -15,7 +15,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #292424;
+        background: #343A40;
     }
 
 
@@ -56,7 +56,7 @@
 <body>
 
     <!-- Controls -->
-    <form method="POST" class="controls">
+    <div class="controls" id="form-image" method="POST" action="/generatePDF">
         <h4>Controls & Settings</h4>
         <label for="customRange1" class="form-label">Size</label>
         <input type="range" class="form-range" id="profile-width" name="profile-width" value="0" min="-100" max="100">
@@ -67,13 +67,15 @@
         <label for="customRange1" class="form-label">Top-Bottom</label>
         <input type="range" class="form-range" id="profile-top" name="profile-top" value="0" min="-100" max="100">
 
-        <button type="submit" class="download-btn">Download Image</button>
-    </form>
+        <button type="button" class="download-btn" id="download-btn">Download Image</button>
+    </div>
 
     <div class="card" id="card">
 
+        <!-- The Values folder will be taken or copied to PDF by another router. -->
+
         <% if (data.student) { %>
-        <div class="values">
+        <div class="values" id="values">
 
             <!-- Image Wrapper and Photo -->
             <div class="wrapper">
@@ -82,15 +84,14 @@
                         position: absolute;
                         text-align: center;
                         display: inline-block;
-                        top: 292px;
-                        left: 2px;
+                        top: 291px;
+                        left: -6px;
                         width: 100%;
-
                     }
 
                     .profile-div {
-                        width: 293px;
-                        height: 293px;
+                        width: 350px;
+                        height: 350px;
                         border-radius: 50%;
                         margin-left: auto;
                         margin-right: auto;
@@ -99,16 +100,12 @@
 
                     #profile-photo {
                         position: relative;
-                        width: 285px;
-                        top: 8px;
-                        left: 10px;
                     }
                 </style>
                 <div class="profile-div">
-                    <img id="profile-photo" src="<%= data.student.profile%>">
+                    <img id="profile-photo" src="<%= data.student.profile%>" style="width: 385px; top: 0; left: -17px;">
                 </div>
             </div>
-
 
             <span id="id" class="ab titer">ID: <span id="id-value"><%= data.student.kankorId%></span></span>
             <span id="name" class="ab titer center"><span id="fatherName-value"><%= data.student.name%></span></span>
@@ -132,6 +129,7 @@
     </div>
 
 </body>
+<script src="./js/main/cardLive.js"></script>
 <script src="./card-template/js/main.js"></script>
 
 <script>

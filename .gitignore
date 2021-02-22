@@ -3,3 +3,15 @@ config/prod.env
 src-server/logger/logs/*
 .vercel
 vercel.json
+
+# Ignore generated pdf cards:-
+data/card-generated/*
+
+# Ignore everything in this directory, except:-
+data/card-template/*
+
+# The Except:-
+!data/card-template/css
+!data/card-template/fonts
+!data/card-template/images
+!data/card-template/js

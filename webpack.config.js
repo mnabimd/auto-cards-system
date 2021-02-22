@@ -1,19 +1,10 @@
 const path = require('path');
-const webpack = require('webpack');
 
-// If you want webpack own html web pack then in terminal: npm i html-webpack-plugin --save-dev.
-module.exports = {
-    entry: ['babel-polyfill', './src-webpack/index.js'],
-    output: {
-        path: path.resolve(__dirname, 'public/js/'),
-        filename: 'main/bundle.js'
-    },
+const config = {
     devServer: {
+        inline: false,
         contentBase: './public'
     },
-    plugins: [
-        
-    ],
     module: {
         rules: [
             {
@@ -26,4 +17,21 @@ module.exports = {
         ]
     }
 };
+
+const newJsFile = (entry = "index.js", output = "main/bundle.js", pathJs = "public/js/") => {
+    return Object.assign({}, config, {
+        entry: ['babel-polyfill', `./src-webpack/${entry}`],
+        output: {
+           path: path.resolve(__dirname, pathJs),
+           filename: output
+        },
+    });
+}
+
+const bundleJs = newJsFile();
+const miniScript = newJsFile("/all-scripts/cardLive.js", "main/cardLive.js")
+
+module.exports = [bundleJs, miniScript]
+
+
 
