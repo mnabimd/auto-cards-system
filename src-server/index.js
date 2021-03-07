@@ -15,6 +15,9 @@ app.set('view engine', 'ejs');
 appUse(app);
 appRouters(app);
 
+// Global Path for all scripts:-
+global.mainDir = path.resolve('./'); // :- e.g AUTO CARD SYSTEM
+
 app.listen(PORT, () => {
     console.log(`App has been started on PORT ${PORT}`);
 });

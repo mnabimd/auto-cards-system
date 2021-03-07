@@ -3,6 +3,11 @@
     src: url('../fonts/IRTitr.ttf');
 }
 
+@font-face {
+    font-family: 'Britannic';
+    src: url('../fonts/Britannic.ttf');
+}
+
 * {
     margin: 0px;
     padding: 0px;
@@ -77,4 +82,27 @@
     color: #353A40;;
     top: 1042px;
     font-size: 33px;
+}
+
+#e_name-div {
+    width: 100%;
+    text-align: center;
+    top: 1180px;
+}
+#e_desc-div {
+    width: 100%;
+    text-align: center;
+    top: 1180px;
+}
+
+#e_desc {
+    width: 100%;
+    color: #000;
+    background: #fff;
+    padding: 10px;
+    font-family: 'Britannic' !important;
+    font-size: 22px;
+    text-align: center;
+    position: relative;
+    top: 51px;
 }

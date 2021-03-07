@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Live </title>
     <link rel="stylesheet" href="./card-template/css/style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,900;1,400&display=swap"
+        rel="stylesheet">
 </head>
 
 <style>
@@ -107,17 +110,26 @@
                 </div>
             </div>
 
-            <span id="id" class="ab titer">ID: <span id="id-value"><%= data.student.kankorId%></span></span>
+            <div id="id" class="ids-container ab titer">
+                <span>K_ID: <span id="id-value"><%= data.student.kankorId%></span></span><br />
+                <span id="dbId">DB: <span id="db_id-value"><%= data.student._id%></span></span>
+            </div>
+
             <span id="name" class="ab titer center"><span id="fatherName-value"><%= data.student.name%></span></span>
             <span id="fatherName" class="ab titer center">د پلارنوم: <span
                     id="fatherName-value"><%= data.student.fatherName%></span></span>
-            <span id="titleWithFaculty" class="ab titer center" id="facluty-value"> د <%= data.student.faculty%> پوهنځی
-                محصل </span>
+            <span id="titleWithFaculty" class="ab titer center" id="facluty-value"><%= data.student.faculty%></span>
             <span id="branch" class="ab titer center">څانګه: <span
                     id="branch-value"><%= data.student.branch%></span></span>
             <span id="blood" class="ab titer center"><span id="blood-value"><%= data.student.blood%></span>:د وینی ګروپ
             </span>
-            <span id="expireDate" class="ab titer center">ختم نیټه:<span id="expire-value">۱۳۹۹/۱۲/۱۱</span></span>
+            <span id="expireDate" class="ab titer center">ختم نیټه:<span id="expire-value"><%= data.student.yearOfKankor%></span></span>
+
+            <div id="e_desc-div" class="center">
+                <span id="e_desc" class="titer"><%= data.student.eName%>, student at Kandahar University.</span>
+                <br />
+            </div>
+
         </div>
 
         <%}%>
@@ -135,42 +147,45 @@
 <script>
 
     // My custom functions:--------------------
-    const getCssValue = (element, property) => {
-        const dom = document.querySelector(element);
+    const liveProfileResizer = () => {
 
-        return window.getComputedStyle(dom).getPropertyValue(property);
-    }
-    
-    const parser = (pxValue) => {return parseInt(pxValue.split('px')[0])};
-    // ------------------------------------------
-    
-     const profileElements = {
-        profilePhoto: document.getElementById('profile-photo'),
-        width: document.getElementById('profile-width'),
-        left: document.getElementById('profile-left'),
-        top: document.getElementById('profile-top')
-    }
+        const getCssValue = (element, property) => {
+            const dom = document.querySelector(element);
 
-    const prevValues = {
-        width: parser(getCssValue('#profile-photo', 'width')),
-        top: parser(getCssValue('#profile-photo', 'top')),
-        left: parser(getCssValue('#profile-photo', 'left'))
-    }
+            return window.getComputedStyle(dom).getPropertyValue(property);
+        }
+        
+        const parser = (pxValue) => {return parseInt(pxValue.split('px')[0])};
+        // ------------------------------------------
+        
+        const profileElements = {
+            profilePhoto: document.getElementById('profile-photo'),
+            width: document.getElementById('profile-width'),
+            left: document.getElementById('profile-left'),
+            top: document.getElementById('profile-top')
+        }
 
-    const inputs = ['profile-width', 'profile-top', 'profile-left'];
+        const prevValues = {
+            width: parser(getCssValue('#profile-photo', 'width')),
+            top: parser(getCssValue('#profile-photo', 'top')),
+            left: parser(getCssValue('#profile-photo', 'left'))
+        }
 
-    inputs.forEach((input, index, array) => {
-        document.getElementById(input).addEventListener('input', (e) => {
-            let theElement = profileElements.profilePhoto.style;
-            if (input === array[0]) {
-                theElement.width = `${parseInt(e.target.value) + prevValues.width}px`;
-            } else if (input === array[1]) {
-                theElement.top = `${parseInt(e.target.value) + prevValues.top}px`;
-            } else if (input === array[2]) {
-                theElement.left = `${parseInt(e.target.value) + prevValues.left}px`;
-            }
-        })
-    });
+        const inputs = ['profile-width', 'profile-top', 'profile-left'];
+
+        inputs.forEach((input, index, array) => {
+            document.getElementById(input).addEventListener('input', (e) => {
+                let theElement = profileElements.profilePhoto.style;
+                if (input === array[0]) {
+                    theElement.width = `${parseInt(e.target.value) + prevValues.width}px`;
+                } else if (input === array[1]) {
+                    theElement.top = `${parseInt(e.target.value) + prevValues.top}px`;
+                } else if (input === array[2]) {
+                    theElement.left = `${parseInt(e.target.value) + prevValues.left}px`;
+                }
+            })
+        });
+    }; liveProfileResizer();
 
 </script>
 
