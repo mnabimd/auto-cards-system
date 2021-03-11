@@ -111,7 +111,6 @@ router.post('/generatePDF', async (req, res) => {
     const values = req.body.values
     const kankorId = req.body.studentId
 
-
     try {
         
         let theHtmlTemplate = fs.readFileSync(path.join(__dirname, '../../data/card-template/card.html'), 'utf8');
@@ -136,26 +135,37 @@ router.post('/generatePDF', async (req, res) => {
             type: 'pdf'
         };
 
+        // Load the settings file and get the current Kankor Year:-
+        const theSettings = fs.readFileSync(path.join(__dirname, '../settings/appSettings.json'));
+        const currentKankorYear = JSON.parse(theSettings).currentEducationalYear;
+
         // Before generating the card, first let's send a request to the DB to update the card status:-
         const cardStatusInDB = await axios.post(`${process.env.DB_HOST}/studentCard`, {
-            kankorId
+            kankorId,
+            year: currentKankorYear
         });
-
-        if (!cardStatusInDB.data.code === 500) {
+        
+        if (cardStatusInDB.data.code === 500) {
             throw 'Card not saved!';
         }
 
-        
-
         pdf.create(readNewHTMLFile, options).toFile(`data/card-generated/${newHtmlName}.pdf`, function (err, response) {
-            if (err) return console.log(err);
+            if (err) {
+                console.log(err);
+                
+                return res.send(['Card Generation Failed @ card.js:148', err]) 
+            }
+
+
+            // Send the response when the generation is done!:-
+            res.send({
+                message: 'Card generated and saved!',
+                filename: newHtmlName,
+                code: 200
+            });
+
         });
 
-        // Send the response:-
-        res.send({
-            message: 'Card generated and saved!',
-            path: path.join(__dirname, `../../data/card-generated/${newHtmlName}.pdf`)
-        });
 
     } catch (e) {
         console.log([e, 'Location: card.js'])
@@ -163,6 +173,12 @@ router.post('/generatePDF', async (req, res) => {
 
 });
 
+// GET Generated File through :-
+router.get('/getPDF/:file', (req, res) => {
+    const dir = path.join(__dirname, `../../data/card-generated/${req.params.file}.pdf`);
+
+    res.sendFile(dir);
+});
 
 
 module.exports = router;
