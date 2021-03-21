@@ -2,16 +2,6 @@ const express = require('express');
 const {auth} = require('../middleware/loginAuthenticate');
 const {checkIfLoggedIn} = require('../middleware/loginAuthenticate');
 const router = new express.Router();
-const {sendRender} = require('./renderer/renderer');
-
-router.get('/', auth, (req, res) => {
-    res.render('index', {
-        data: {
-            user: 'Mohammad Nabi'
-        }
-    });
-});
-
 
 router.get('/register', checkIfLoggedIn, (req, res) => {
     // Currently, we don't support register in this

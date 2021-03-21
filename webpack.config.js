@@ -29,9 +29,11 @@ const newJsFile = (entry = "index.js", output = "main/bundle.js", pathJs = "publ
 }
 
 const bundleJs = newJsFile();
-const miniScript = newJsFile("/all-scripts/cardLive.js", "main/cardLive.js")
+const miniScript = newJsFile("/all-scripts/cardLive.js", "main/cardLive.js");
+const chartBarScript = newJsFile("/all-scripts/chart.js", "main/chart.js");
 
-module.exports = [bundleJs, miniScript]
+
+module.exports = [bundleJs, miniScript, chartBarScript];
 
 
 

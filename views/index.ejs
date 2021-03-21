@@ -30,8 +30,40 @@
                     <!-- ---------------------------------------------------------------------- -->
                     <!-- Page Heading -->
                     <div class="main-div" id="card">
-                        <!-- <h4 class="text-dark">Create New Card</h4> -->
-                        Home Page
+                        <!-- <h4 class="text-dark">Create New Card</h4> --> 
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Faculties Chart</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-bar"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                    <canvas id="facultiesChart" class="chartjs-render-monitor"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Departments Chart</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                    <div class="carousel-inner" id="departments-charts-slider">
+                                      
+                                    </div>
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                  </div>
+                            </div>
+                        </div>
+
                     </div>
                     <!-- ---------------------------------------------------------------------- -->
                 </div>
@@ -69,8 +101,9 @@
     <script src="js/sb-admin-2.min.js"></script>
 
     <!-- My Scripts:- -->
-    <script src="./js/main/bundle.js"></script>
-
+    <!-- <script src="./js/main/bundle.js"></script> -->
+    <script src="./js/main/chart.js"></script>
+    
 </body>
 
 </html>
