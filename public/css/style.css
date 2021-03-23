@@ -19,3 +19,19 @@
     height: 50px;
     box-shadow: inset 0px 1px 3px 0px rgb(0 0 0 / 8%);
 }
+
+
+/* Bootstrap Carousel Arrows */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 40px;
+  width: 40px;
+  outline: black;
+  background-size: 100%, 100%;
+  background-image: none;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon/*, .carousel-indicators */ {
+    filter: invert(100%);
+}

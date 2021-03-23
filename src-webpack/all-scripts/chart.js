@@ -6,6 +6,11 @@ const axios = require('axios');
 const HOST = 'http://localhost:3000';
 const topbarSearch = require('../all-scripts/topbarSearch');
 
+
+// Chart.js gLobal settings:-
+Chart.defaults.global.defaultFontFamily = 'Bahij Nazanin', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontSize = 13;
+
 class FacultiesChart {
 
   constructor(data, element) {
@@ -134,7 +139,7 @@ class DepartmentsChart {
     this.element = element;
   }
 
-  canvasCreate(data, element = this.element) {
+  canvasCreate(data = this.data, element = this.element) {
     const faculties = data.facultiesWithDepts.map(faculty => faculty.name);
 
     // Divs are the (number) of .carousel-items which will be generated to .carousel-inner:-
@@ -152,16 +157,17 @@ class DepartmentsChart {
     };
 
 
-    // The ID for each (canvas) will start on the index 1:-
-    var id = 0;
+    // The ID for each (canvas) will start on the index 0:-
+    var id = -1;
     let canvas = faculties3in1Array.map((faculty) => {
 
       // faculty is again an array:- This means, the first return will get a new array with possible 3 elements:-
       return faculty.map((name) => {
         id++;
         return `<div class="col-4 text-center">
-                  <div style="width: 300px; height: 300px; background: #eee"></div>
-                  <span>${name}</span>
+                  <canvas id="depChart-${id}" class="chartjs-render-monitor" style="width: 300px; height: 300px; "></canvas>
+                  <hr/>
+                  <span class="pashtoFont">${name}</span>
                 </div>`
       });
     });
@@ -206,6 +212,76 @@ class DepartmentsChart {
 
     }
   }
+
+  faculties(data = this.data) {
+    return data.facultiesWithDepts.map(faculty => faculty.name);
+  }
+
+  stateGenerate(index, data = this.data) {
+
+    const state = data.facultiesWithDepts.map(faculty => faculty.branches);
+
+    const singleDep = state[index];
+
+    const names = singleDep.map(dep => dep.branch);
+    const total = singleDep.map(dep => dep.total);
+    const male = singleDep.map(dep => dep.gender.male);
+    const female = singleDep.map(dep => dep.gender.female);
+
+    const obj = {names, total, male, female}
+
+    return obj;
+  }
+
+  chart(ctx) {
+    // Pie Chart Example
+    // the element's ID:-
+    const index = ctx.id.split('-')[1];
+
+    const state = this.stateGenerate(index);
+
+    console.log(state)
+
+    var myPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: state.names,
+        datasets: [{
+          label: 'Card',
+          data: state.total,
+          backgroundColor: ['#4e73df', '#36b9cc', '#1cc88a',  '#777', '#9fb8ad', '#003f5c', '#282846','#03506f', '#903749', '#ffcb91', '#7868e6', '#ccffbd'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: true,
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              console.log(tooltipItem, data);
+              return `${data.labels[tooltipItem.index]} څانګه`;
+            },
+            afterLabel: function (tooltipItem, data) {
+              return `Male: ${state.male[tooltipItem.index]} | Female: ${state.female[tooltipItem.index]} | Total: ${state.total[tooltipItem.index]}`;
+            }
+          },
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 25,
+          yPadding: 25,
+          displayColors: true,
+          caretPadding: 10,
+        },
+        legend: {
+          display: true
+        },
+        cutoutPercentage: 0,
+      },
+    });
+
+  }
 }
 
 const initCharts = async (year) => {
@@ -225,14 +301,21 @@ const initCharts = async (year) => {
   const search = topbarSearch('afterend', 'sidebarToggleTop', `YEAR - ${year}`);
 
 
-  console.log(data);
+  // console.log(data);
 
   // Faculties Chart Init:-
   const facultiesChart = new FacultiesChart(data, elements.facultiesChart);
   facultiesChart.chart();
 
   const deptsChart = new DepartmentsChart(data, elements.deptsSlider);
-  deptsChart.canvasCreate(data);
+  deptsChart.canvasCreate();
+  const faculties = deptsChart.faculties();
+
+  // Let's create a loop for drawing the pie/chart for all faculties:-
+  for (let i = 0; i < faculties.length; i++) {
+    deptsChart.chart(document.getElementById(`depChart-${i}`));
+  }
+  deptsChart.chart(document.getElementById('depChart-1')); 
 
 };
 
