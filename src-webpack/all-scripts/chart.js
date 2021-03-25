@@ -5,6 +5,8 @@ const elements = require('../views/elements');
 const axios = require('axios');
 const HOST = 'http://localhost:3000';
 const topbarSearch = require('../all-scripts/topbarSearch');
+const currentYear = require('../../src-server/settings/appSettings.json').currentEducationalYear;
+
 
 
 // Chart.js gLobal settings:-
@@ -54,7 +56,6 @@ class FacultiesChart {
           {
             label: "Female",
             backgroundColor: 'skyblue',
-            hoverBackgroundColor: "#2e59d9",
             borderColor: "#4e73df",
             data: options.female,
           }
@@ -140,6 +141,12 @@ class DepartmentsChart {
   }
 
   canvasCreate(data = this.data, element = this.element) {
+
+    // Empty element (.carousel-inner), if it's children were already there:-
+    if (element.children.length != 0) {
+      element.innerHTML = '';
+    }
+
     const faculties = data.facultiesWithDepts.map(faculty => faculty.name);
 
     // Divs are the (number) of .carousel-items which will be generated to .carousel-inner:-
@@ -228,7 +235,12 @@ class DepartmentsChart {
     const male = singleDep.map(dep => dep.gender.male);
     const female = singleDep.map(dep => dep.gender.female);
 
-    const obj = {names, total, male, female}
+    const obj = {
+      names,
+      total,
+      male,
+      female
+    }
 
     return obj;
   }
@@ -240,8 +252,6 @@ class DepartmentsChart {
 
     const state = this.stateGenerate(index);
 
-    console.log(state)
-
     var myPieChart = new Chart(ctx, {
       type: 'pie',
       data: {
@@ -249,7 +259,7 @@ class DepartmentsChart {
         datasets: [{
           label: 'Card',
           data: state.total,
-          backgroundColor: ['#4e73df', '#36b9cc', '#1cc88a',  '#777', '#9fb8ad', '#003f5c', '#282846','#03506f', '#903749', '#ffcb91', '#7868e6', '#ccffbd'],
+          backgroundColor: ['#4e73df', '#36b9cc', '#1cc88a', '#777', '#9fb8ad', '#003f5c', '#282846', '#03506f', '#903749', '#ffcb91', '#7868e6', '#ccffbd'],
           hoverBorderColor: "rgba(234, 236, 244, 1)",
         }],
       },
@@ -258,7 +268,6 @@ class DepartmentsChart {
         tooltips: {
           callbacks: {
             label: function (tooltipItem, data) {
-              console.log(tooltipItem, data);
               return `${data.labels[tooltipItem.index]} څانګه`;
             },
             afterLabel: function (tooltipItem, data) {
@@ -284,7 +293,53 @@ class DepartmentsChart {
   }
 }
 
-const initCharts = async (year) => {
+class Statistics {
+  constructor(data) {
+    this.data = data;
+  };
+
+  state(data = this.data) {
+    return {
+      year: data.year,
+      generalMale: data.generalAllYears.gender.male,
+      generalFemale: data.generalAllYears.gender.female,
+      generalBoth: data.generalAllYears.cardsTaken,
+      generalAll: data.generalAllYears.totalCards,
+      yearlyMale: data.generalYearly.gender.male,
+      yearlyFemale: data.generalYearly.gender.female,
+      yearlyBoth: data.generalYearly.cardsTaken,
+      yearlyAll: data.generalYearly.totalCards
+    };
+  }
+
+  updateElements(data = this.state(this.data)) {
+    const elements = ['general-male', 'general-female', 'general-both', 'general-all', 'yearly-male', 'yearly-female', 'yearly-both', 'yearly-all'];
+
+    elements.forEach(element => {
+      const returnJSName = (word) => {
+
+        let nameJS = word.split('-');
+        let cap2Word = nameJS[1].split('');
+        cap2Word[0] = cap2Word[0].toUpperCase();
+        cap2Word = cap2Word.join('');
+
+        nameJS[1] = cap2Word;
+
+        nameJS = nameJS.join('');
+        return nameJS
+      }
+
+      const dataValue = returnJSName(element);
+
+      document.getElementById(element).innerText = data[dataValue];
+    });
+
+    // Year
+    document.getElementById('ihsayaYear').innerText = data.year;
+  }
+}
+
+const initCharts = async (year = currentYear) => {
   const data = await (async () => {
     const response = await axios.post(`${HOST}/dashboard`, {
       year
@@ -298,15 +353,13 @@ const initCharts = async (year) => {
   })();
 
   // Append Search Bar with the current Year:-
-  const search = topbarSearch('afterend', 'sidebarToggleTop', `YEAR - ${year}`);
-
-
-  // console.log(data);
+  const search = topbarSearch('afterend', 'sidebarToggleTop', `YEAR - ${year}`, year);
 
   // Faculties Chart Init:-
   const facultiesChart = new FacultiesChart(data, elements.facultiesChart);
   facultiesChart.chart();
 
+  // Departments Pie Init:-
   const deptsChart = new DepartmentsChart(data, elements.deptsSlider);
   deptsChart.canvasCreate();
   const faculties = deptsChart.faculties();
@@ -314,9 +367,24 @@ const initCharts = async (year) => {
   // Let's create a loop for drawing the pie/chart for all faculties:-
   for (let i = 0; i < faculties.length; i++) {
     deptsChart.chart(document.getElementById(`depChart-${i}`));
-  }
-  deptsChart.chart(document.getElementById('depChart-1')); 
+  };
+
+
+  // Update Statistics Values:-
+  const statistics = new Statistics(data);
+  statistics.updateElements();
+
+  // Add the event handler for year search in topbarSearch:-
+  const searchElements = {input: document.getElementById('searched-year'), button: document.getElementById('search-button')};
+
+  const searchingYears = (el1 = searchElements.input, el2 = searchElements.button) => {
+      el2.addEventListener('click', (e) => {
+        initCharts(el1.value);
+      });
+  }; searchingYears();
 
 };
 
-initCharts(1401);
+
+
+initCharts();
